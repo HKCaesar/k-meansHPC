@@ -252,7 +252,7 @@ def divideDocuments(listDocuments):
     return documentsDivided
 
 
-def divdeCusterDocuments(clusterDocuments):
+def divideCusterDocuments(clusterDocuments):
     '''
     Este metodo divide en los N procesos el total de documentos
     :param clusterDocuments: Arreglo con los nombre de todos los documentos sin centroides
@@ -371,7 +371,7 @@ clusterRank = comm.bcast(arrayClusters, root=1)
 centroids = []
 for i in range(k):
     if rank == 0:
-        docsDividedPerCluster = separarDocumentosDelCluster(clusterRank[i])
+        docsDividedPerCluster = divideCusterDocuments(clusterRank[i])
     myDocsPerCluster = comm.scatter(docsDividedPerCluster,root=0)
     myfilesPerCluster = archivos(myDocsPerCluster)
     clusterDocs = archivos(clusterRank[i])
