@@ -310,9 +310,9 @@ if rank == 0:
     t0 = time()
     listDocuments = os.listdir(datasetLocation)
     assert len(listDocuments) >= k
-    #centroids = random.sample(listDocuments, k)
+    centroids = random.sample(listDocuments, k)
     #centroids = ["Anthony Trollope___He Knew He Was Right.txt","Anthony Trollope___Autobiography of Anthony Trollope.txt","Anthony Trollope___Dr. Wortle's School.txt","Anthony Trollope___A Ride Across Palestine.txt"]
-    centroids = listDocuments[0:k]
+    #centroids = listDocuments[0:k]
     print centroids
     #centroids = ["Andrew Lang___New Collected Rhymes.txt","Andrew Lang___The Valet's Tragedy and Other Stories.txt","Anthony Trollope___Ayala's Angel.txt","Anthony Trollope___Lady Anna.txt"]
     for centroid in centroids:
