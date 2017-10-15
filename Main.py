@@ -423,7 +423,7 @@ if rank == 0:
     for i in range(k):
         arrayClusters.append(newClusters[i])
 
-clusterRank = comm.bcast(arrayClusters, root=1)
+clusterRank = comm.bcast(arrayClusters, root=0)
 
 if rank == 0:
     t1 = time()
