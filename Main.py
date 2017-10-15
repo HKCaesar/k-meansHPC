@@ -341,7 +341,7 @@ if rank == 0:
 
 for centroid in centroids:
     clustersArray.append(clusters[centroids.index(centroid)])
-
+print rank,"Arreglo que me toco",data,"con centroides:",centroids,"resulto",clusters
 rankArray = comm.gather(clustersArray, root=1)
 aloneArray = comm.gather(alonesDocuments, root=1)
 
