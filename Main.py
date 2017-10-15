@@ -413,7 +413,7 @@ if rank == 1:
     print "ME llego:",aloneArray
     alonesDocuments = set([])
     for alone in aloneArray:
-        alonesDocuments = alonesDocuments.union(alone)
+        alonesDocuments = alonesDocuments | alone
 
     newClusters = {}
     newClusters = defaultdict(lambda: [])
