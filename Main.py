@@ -148,10 +148,10 @@ def jaccardAlgorithm(fileA, fileB):
     return countInterception / (len(totalFile) * 1.0)
 
 
-def clustering(centroids, allFiles, listDocuments):
+def clustering(newCentroids, allFiles, listDocuments):
     '''
     Este metodo conforma los clusters
-    :param centroids: Arreglo de los nombres de los centroides
+    :param newCentroids: Arreglo de los nombres de los centroides
     :param allFiles: Arreglo que contiene un arreglo de las palabras de cada archivo
     :param listDocuments: Arreglo de los nombres de todos los documentos que le corresponden al core
     :return: Un mapa donde la clave es un entero indicando el centroide y el valor es el arreglo de nombres de documentos que conforman ese cluster
@@ -162,7 +162,7 @@ def clustering(centroids, allFiles, listDocuments):
     # Este loop itera sobre los documentos y los compara contra cada centroide.
     for doc in listDocuments:
         wordsDoc = allFiles[doc]
-        for centroid in centroids:
+        for centroid in newCentroids:
             wordsCentroids = allFiles[centroid]
             index = jaccardAlgorithm(wordsDoc, wordsCentroids)
             comparisons[doc].append(index)
@@ -170,7 +170,7 @@ def clustering(centroids, allFiles, listDocuments):
     clustersDictionary = defaultdict(lambda: [])
 
     # Este loop inicializa los valores del diccionario con un arreglo vacio.
-    for initCluster in range(0, len(centroids)):
+    for initCluster in range(0, len(newCentroids)):
         clustersDictionary[initCluster] = []
 
     for doc in listDocuments:
@@ -366,6 +366,7 @@ clusterRank = comm.bcast(arrayClusters, root=1)
 
 centroids = []
 myDocsPerCluster = []
+documentsDivided = []
 docsDividedPerCluster = []
 for i in range(k):
     if rank == 0:
@@ -379,18 +380,8 @@ for i in range(k):
     if rank == 0:
         newCentroid = maxAverageDocNameArray[maxAverageIndexArray.index(max(maxAverageIndexArray))]
         centroids.append(newCentroid)
-if rank==0:
-    print centroids
-
 if rank == 0:
-    alonesDocuments = set([])
-    centroids = newCentroids[0:k]
-
-    ########### ########### ###########    ######################
-
-if rank == 0:
-    documentsDivided = []
-
+    listDocuments = os.listdir(datasetLocation)
     for centroid in centroids:
         listDocuments.remove(centroid)
 
@@ -398,30 +389,19 @@ if rank == 0:
 
     for centroid in centroids:
         listDocuments.append(centroid)
-else:
-    centroids = None
+centroids = comm.bcast(centroids,root=0)
+data = comm.scatter(documentsDivided,root=0)
+alfiles = archivos(data+centroids)
 
-data = comm.scatter(documentsDivided, root=0)
-centroids = comm.bcast(centroids, root=0)
-
-for centroid in centroids:
-    # clusters[centroids.index(centroid)].append(centroid)
-    data.append(centroid)
-
-allfiles = archivos(data)
-
-for centroid in centroids:
-    data.remove(centroid)
-
-clusters = clustering(centroids, allfiles, data)
+newClusters = clustering(centroids, allfiles, data)
 
 if rank == 0:
     for centroid in centroids:
-        clusters[centroids.index(centroid)].append(centroid)
+        newClusters[centroids.index(centroid)].append(centroid)
 
 clustersArray = []
 for centroid in centroids:
-    clustersArray.append(clusters[centroids.index(centroid)])
+    clustersArray.append(newClusters[centroids.index(centroid)])
 
 rankArray = comm.gather(clustersArray, root=1)
 aloneArray = comm.gather(alonesDocuments, root=1)
