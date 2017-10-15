@@ -391,9 +391,10 @@ if rank == 0:
 
     for centroid in centroids:
         listDocuments.append(centroid)
+
 centroids = comm.bcast(centroids,root=0)
 data = comm.scatter(documentsDivided,root=0)
-alfiles = archivos(data+centroids)
+allfiles = archivos(data+centroids)
 
 newClusters = clustering(centroids, allfiles, data)
 
