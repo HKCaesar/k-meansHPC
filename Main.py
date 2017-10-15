@@ -195,11 +195,8 @@ def redefineCentroids(clustersDictionary, rank, allFiles):
     :return: Nombre del nuevo centroide del cluster asignado al proceso
     '''
     docAverages = defaultdict(lambda: [])
-    t4=time()
     distanceMatrix = [[1 for x in range(0, len(clustersDictionary[rank]))] for y in
                       range(0, len(clustersDictionary[rank]))]
-    t5=time()
-    print(rank,"Inicializar se demora",t5-t4)
     for y in range(0, len(clustersDictionary[rank])):
 
         for x in range(y + 1, len(clustersDictionary[rank])):
@@ -212,13 +209,11 @@ def redefineCentroids(clustersDictionary, rank, allFiles):
             distanceMatrix[x][y] = jaccardAlgorithm(wordsDoc1, wordsDoc2)
             distanceMatrix[y][x] = distanceMatrix[x][y]
     t6=time()
-    print(rank,"Llenar se demora",t6-t5,"con",len(clustersDictionary[rank]),"documentos")
     for j in range(0, len(distanceMatrix[0])):
         cumSum = np.cumsum(distanceMatrix[j])
         docAverages[rank].append((cumSum[len(cumSum) - 1]) / len(cumSum))
 
     centroid = clustersDictionary[rank][docAverages[rank].index(max(docAverages[rank]))]
-    print(rank,"Cumsum de mierda se demora", time() - t6)
     return centroid
 
 
@@ -283,7 +278,6 @@ def divideCusterDocuments(clusterDocuments):
     return clusterDocumentsDivided
 
 def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCluster):
-    print namesSubclusterDocs,subclusterDocs,namesAllCluster,allCluster
     maxAverageIndex = -1
     maxAverageDocName = ""
     for i in namesSubclusterDocs:
