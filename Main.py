@@ -283,6 +283,7 @@ def divideCusterDocuments(clusterDocuments):
     return clusterDocumentsDivided
 
 def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCluster):
+    print namesSubclusterDocs,subclusterDocs,namesAllCluster,allCluster
     maxAverageIndex = -1
     maxAverageDocName = ""
     for i in namesSubclusterDocs:
