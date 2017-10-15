@@ -307,7 +307,7 @@ documentsDivided = []
 listDocuments = []
 arrayClusters = []
 clustersArray = []
-datasetLocation = "/opt/GutenbergP/txt/"
+datasetLocation = "/home/emonto15/dataset/"
 
 if rank == 0 | rank == 1:
     t0 = time()
