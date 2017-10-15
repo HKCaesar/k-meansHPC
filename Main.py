@@ -382,7 +382,7 @@ for i in range(k):
     maxAverageIndexArray = comm.gather(maxAverageIndex, root=0)
     maxAverageDocNameArray = comm.gather(maxAverageDocName, root=0)
     if rank == 0:
-        newCentroid = maxAverageDocNameArray[maxAverageDocNameArray.index(max(maxAverageIndexArray))]
+        newCentroid = maxAverageDocNameArray[maxAverageIndexArray.index(max(maxAverageIndexArray))]
         centroids.append(newCentroid)
 if rank==0:
     print centroids
