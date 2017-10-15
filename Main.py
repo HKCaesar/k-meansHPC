@@ -258,6 +258,7 @@ def divideCusterDocuments(clusterDocuments):
     :param clusterDocuments: Arreglo con los nombre de todos los documentos sin centroides
     :return: Arreglo de arreglos con los nombres de los documentos que le toca a cada proceso
     '''
+    clusterDocumentsDivided = []
     if (len(clusterDocuments) % size == 0):
         slice = len(clusterDocuments) // size
         iterator = 0
