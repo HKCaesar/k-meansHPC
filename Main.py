@@ -405,16 +405,14 @@ clustersArray = []
 for centroid in centroids:
     clustersArray.append(newClusters[centroids.index(centroid)])
 
-rankArray = comm.gather(clustersArray, root=1)
-aloneArray = comm.gather(alonesDocuments, root=1)
+rankArray = comm.gather(clustersArray, root=0)
+aloneArray = comm.gather(alonesDocuments, root=0)
 
 arrayClusters = []
-if rank == 1:
-    print "ME llego:",aloneArray
-    alonesDocuments = set([])
+if rank == 0:
+    alonesDocuments = set()
     for alone in aloneArray:
-        alonesDocuments = alonesDocuments | alone
-
+        alonesDocuments = alonesDocuments.union(alone)
     newClusters = {}
     newClusters = defaultdict(lambda: [])
 
