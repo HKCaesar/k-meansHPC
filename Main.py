@@ -411,7 +411,7 @@ aloneArray = comm.gather(alonesDocuments, root=1)
 arrayClusters = []
 if rank == 1:
     print "ME llego:",aloneArray
-    alonesDocuments = set()
+    alonesDocuments = set([])
     for alone in aloneArray:
         alonesDocuments = alonesDocuments.union(alone)
 
