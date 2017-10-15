@@ -132,7 +132,7 @@ def jaccardAlgorithm(fileA, fileB):
     collectionA = defaultdict(lambda: 0)
     collectionB = defaultdict(lambda: 0)
 
-    totalFile = list(set(fileA + fileB))
+    totalFile = list(fileA + fileB)
 
     for i in range(len(fileA)):
         collectionA[fileA[i]]+=1
@@ -140,7 +140,7 @@ def jaccardAlgorithm(fileA, fileB):
     for j in range(len(fileB)):
         collectionB[fileB[j]]+=1
 
-    interception = list(set(fileA + fileB))
+    interception = list(set(set(fileA) & set(fileB)))
 
     countInterception = 0
     for k in range(len(interception)):
