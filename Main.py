@@ -341,7 +341,6 @@ if rank == 0:
 
 for centroid in centroids:
     clustersArray.append(clusters[centroids.index(centroid)])
-print rank,"Arreglo que me toco",data,"con centroides:",centroids,"resulto",clusters
 rankArray = comm.gather(clustersArray, root=1)
 aloneArray = comm.gather(alonesDocuments, root=1)
 
@@ -395,7 +394,7 @@ if rank == 0:
 centroids = comm.bcast(centroids,root=0)
 data = comm.scatter(documentsDivided,root=0)
 allfiles = archivos(data+centroids)
-
+alonesDocuments = set([])
 newClusters = clustering(centroids, allfiles, data)
 
 if rank == 0:
@@ -411,6 +410,7 @@ aloneArray = comm.gather(alonesDocuments, root=1)
 
 arrayClusters = []
 if rank == 1:
+    print "ME llego:",aloneArray
     alonesDocuments = set()
     for alone in aloneArray:
         alonesDocuments = alonesDocuments.union(alone)
