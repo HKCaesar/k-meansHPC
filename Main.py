@@ -289,9 +289,9 @@ def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCl
         suma = 0
         for j in namesAllCluster:
             suma += jaccardAlgorithm(subclusterDocs[i],allCluster[j])
-        promedio = suma/len(docsDelCluster)
-        if (promedio > maxAverageIndex):
-            maxAverageIndex=promedio
+        average = suma/len(allCluster)
+        if (average > maxAverageIndex):
+            maxAverageIndex=average
             maxAverageDocName=i
 
     return maxAverageDocName,maxAverageIndex
