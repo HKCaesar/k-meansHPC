@@ -293,7 +293,7 @@ def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCl
 ##MAIN!!!
 
 alonesDocuments = set({})
-k = 4
+k = 2
 comm = MPI.COMM_WORLD
 rank = comm.rank
 size = comm.size
