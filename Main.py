@@ -140,7 +140,7 @@ def jaccardAlgorithm(fileA, fileB):
     for j in range(len(fileB)):
         collectionB[fileB[j]]+=1
 
-    interception = list(set(set(fileA) & set(fileB)))
+    interception = list(set(fileA + fileB))
 
     countInterception = 0
     for k in range(len(interception)):
@@ -249,9 +249,51 @@ def divideDocuments(listDocuments):
         for j in range(waste):
             sliced = listDocuments[top + j]
             documentsDivided[j % size].append(sliced)
-    print ("dividi documentos")
     return documentsDivided
 
+
+def divdeCusterDocuments(clusterDocuments):
+    '''
+    Este metodo divide en los N procesos el total de documentos
+    :param clusterDocuments: Arreglo con los nombre de todos los documentos sin centroides
+    :return: Arreglo de arreglos con los nombres de los documentos que le toca a cada proceso
+    '''
+    if (len(clusterDocuments) % size == 0):
+        slice = len(clusterDocuments) // size
+        iterator = 0
+
+        for i in range(size):
+            top = slice + iterator
+            sliced = clusterDocuments[iterator:top]
+            clusterDocumentsDivided.append(sliced)
+            iterator += slice
+    else:
+        slice = len(clusterDocuments) // size
+        waste = len(clusterDocuments) % size
+        iterator = 0
+        for i in range(size):
+            top = slice + iterator
+            sliced = clusterDocuments[iterator:top]
+            clusterDocumentsDivided.append(sliced)
+            iterator += slice
+        for j in range(waste):
+            sliced = clusterDocuments[top + j]
+            clusterDocumentsDivided[j % size].append(sliced)
+    return clusterDocumentsDivided
+
+def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCluster):
+    maxAverageIndex = -1
+    maxAverageDocName = ""
+    for i in miArregloDeDocsPorCluster:
+        suma = 0
+        for j in docsDelCluster:
+            suma += distancia(i,j)
+        promedio = suma/len(docsDelCluster)
+        if (promedio > maxAverageIndex):
+            maxAverageIndex=promedio
+            maxAverageDocName=i
+
+    return maxAverageDocName,maxAverageIndex
 ##MAIN!!!
 
 alonesDocuments = set({})
@@ -289,30 +331,19 @@ else:
 
 data = comm.scatter(documentsDivided, root=0)
 centroids = comm.bcast(centroids, root=0)
-print("pase el scatter y el bcast")
 for centroid in centroids:
     data.append(centroid)
-print("sacar archivos")
 allfiles = archivos(data)
 
 for centroid in centroids:
     data.remove(centroid)
-if rank == 3:
-    print("vamo a darle")
 clusters = clustering(centroids, allfiles, data)
-if rank == 3:
-    print ("Acabe de darle")
 if rank == 0:
-    print("Coña1")
-    print(time()-t0)
     for centroid in centroids:
         clusters[centroids.index(centroid)].append(centroid)
 
 for centroid in centroids:
     clustersArray.append(clusters[centroids.index(centroid)])
-
-
-
 
 rankArray = comm.gather(clustersArray, root=1)
 aloneArray = comm.gather(alonesDocuments, root=1)
@@ -320,8 +351,6 @@ aloneArray = comm.gather(alonesDocuments, root=1)
 # TODO: Separar alones a otro core
 
 if rank == 1:
-    print("LLego la shit al 1 para darle al recentrar")
-    print(time() - t0)
     for alone in aloneArray:
         alonesDocuments = alonesDocuments.union(alone)
 
@@ -339,23 +368,22 @@ clusterRank = comm.bcast(arrayClusters, root=1)
 
 #############################     ########### ########### ###########    ######################
 
-
-
-centroid = None
-if rank < k:
-    print("LLego la shit al k para darle al recentrar")
-    newMap = {}
-    newMap = defaultdict(lambda: [])
-
-    newMap[rank] += clusterRank[rank]
-    allfiles = archivos(newMap[rank])
-    centroid = redefineCentroids(newMap, rank, allfiles)
-
-newCentroids = comm.gather(centroid, root=0)
+centroids = []
+for i in range(k):
+    if rank == 0:
+        docsDividedPerCluster = separarDocumentosDelCluster(clusterRank[i])
+    myDocsPerCluster = comm.scatter(docsDividedPerCluster,root=0)
+    myfilesPerCluster = archivos(myDocsPerCluster)
+    clusterDocs = archivos(clusterRank[i])
+    #def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCluster)
+    maxAverageDocName, maxAverageIndex = maxAverageDocuments(myDocsPerCluster,myfilesPerCluster,clusterRank[i],clusterDocs)
+    arregloDeMayoresPromedios = comm.gather(numeroDelMayorPromedio, root=0)
+    arregloDeDocsPromedios = comm.gather(documentoConMayorPromedioPorSubCluster, root=0)
+    if rank == 0:
+        nuevoCentroide = arregloDeDocsPromedios[arregloDeMayoresPromedios.index(max(arregloDeMayoresPromedios))]
+        centroides.append(nuevoCentroide)
 
 if rank == 0:
-    print("Salio la shit del k para darle al recentrar")
-    print(time() - t0)
     alonesDocuments = set([])
     centroids = newCentroids[0:k]
 
