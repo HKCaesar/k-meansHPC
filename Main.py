@@ -370,6 +370,7 @@ clusterRank = comm.bcast(arrayClusters, root=1)
 
 centroids = []
 myDocsPerCluster = []
+docsDividedPerCluster = []
 for i in range(k):
     if rank == 0:
         docsDividedPerCluster = divideCusterDocuments(clusterRank[i])
