@@ -230,8 +230,8 @@ def redefineCentroids(clustersDictionary,centroids, allFiles):
     return centroids
 
 t0 = time()
-k = 4
-datasetLocation = "/opt/GutenbergP/txt/"
+k = 8
+datasetLocation = "/opt/Gutenberg/txt/"
 listDocuments = os.listdir(datasetLocation)
 assert len(listDocuments) >= k
 #centroids = random.sample(listDocuments, k)

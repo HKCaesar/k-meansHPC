@@ -307,7 +307,7 @@ def maxAverageDocuments(namesSubclusterDocs,subclusterDocs,namesAllCluster,allCl
 
 #Definiciones de variables
 alonesDocuments = set({})
-k = 2
+k = 8
 comm = MPI.COMM_WORLD
 rank = comm.rank
 size = comm.size
@@ -315,7 +315,7 @@ documentsDivided = []
 listDocuments = []
 arrayClusters = []
 clustersArray = []
-datasetLocation = "/home/emonto15/dataset/"
+datasetLocation = "/opt/Gutenberg/txt/"
 
 #Toma inicial del tiempo
 if rank == 0 | rank == 1:

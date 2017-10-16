@@ -64,6 +64,17 @@ Time: <Time in seconds>
 * **Diego Alejandro Perez**
 * **Edwin Montoya Jaramillo**
 
+### Testing on a server (DCA):
+The Department of computer science of EAFIT University has a  machine with multiple cores where we can test the power of Paralel as shown below:
+```
+$ ssh <VPN Username>@192.168.10.115
+>password:*********
+<VPN Username>@hpcdis:~/$<Download Repo>
+<VPN Username>@hpcdis:~/$cd k-meansHPC/
+<VPN Username>@hpcdis:~/$source activate mpi
+(mpi) <VPN Username>@hpcdis:~/$ mpiexec -n <# of cores you want. Max 70> python ./Paralel.py
+
+```
 ## Acknowledgments
 
 * Edwin Nelson Montoya Múnera
