@@ -245,5 +245,5 @@ t1=time()
 
 print "Clusters:", clusters
 print "Centroids:",centroids
-print "Documentos with no relation:",aloneDocuments
+print "Documents with no relation:",aloneDocuments
 print"Time:", t1-t0
