@@ -48,20 +48,17 @@ datasetLocation = <location of the dataset>
 
 ```
 (mpi) $ mpiexec -n <number of cores> python ./Paralel.py #Paralel
+
 $ python ./Serial #Serial
 
 ```
-### Running the tests (Output)
-
+### Running the tests  (Output both Serial or Paralel)
 
 ```
-> centroids: <Array of centroids>
-final cluster: <Array of Arrays of each cluster>
-aloneDocuments: <Set of documents of no relation>
-took: <Time in seconds>
+> Clusters: <Array of clusters>
+Documents with no Relation: <Set of documents of no relation>
+Time: <Time in seconds>
 ```
-
-
 ## Authors
 
 * **Diego Alejandro Perez**

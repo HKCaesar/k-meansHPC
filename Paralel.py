@@ -455,6 +455,6 @@ clusterRank = comm.bcast(arrayClusters, root=0)
 #Impresion de los clusters conformados, los documentos sin relacion y el tiempo que se tomo
 if rank == 0:
     t1 = time()
-    print ("cluster final", clusterRank)
-    print ("alonesDocuments final", alonesDocuments)
+    print ("Clusters", clusterRank)
+    print ("Documents with no Relation", alonesDocuments)
     print ("Me tome:", t1 - t0, "Segundos")
