@@ -457,4 +457,4 @@ if rank == 0:
     t1 = time()
     print ("Clusters", clusterRank)
     print ("Documents with no Relation", alonesDocuments)
-    print ("Me tome:", t1 - t0, "Segundos")
+    print ("Time:", t1 - t0)
